@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redfish Systems</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .status-indicator {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .status-on {
+            background-color: green;
+        }
+        .status-off {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Redfish Systems</h1>
+    <div class="list-group">
+        {{range $index, $system := .Systems}}
+        <div class="list-group-item">
+            <span class="status-indicator {{if eq $system.PowerState "On"}}status-on{{else}}status-off{{end}}"></span>
+            <strong>{{$system.Name}}</strong>
+            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#details{{$index}}" aria-expanded="false" aria-controls="details{{$index}}">
+                More Info
+            </button>
+            <div class="collapse mt-3" id="details{{$index}}">
+                <p><strong>UUID:</strong> {{$system.UUID}}</p>
+                <p><strong>Power State:</strong> {{$system.PowerState}}</p>
+                <p><strong>Status:</strong> {{$system.Status.State}}, {{$system.Status.Health}}, {{$system.Status.HealthRollUp}}</p>
+            </div>
+        </div>
+        {{end}}
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
